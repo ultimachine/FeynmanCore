@@ -1,0 +1,31 @@
+
+asf\common\services\usb\class\cdc\device\
+ udi_cdc.c
+ udi_cdc.h
+ udi_cdc_conf.h
+ udi_cdc_desc.c
+ udi_cdc_doc.h
+
+asf\common\services\usb\udc\
+ udd.h
+ udc.c
+ udc.h
+ udc_desc.h
+ udi.h
+
+asf\common\utils\interrupt\
+ interrupt_sam_nvic.c
+ interrupt_sam_nvic.h
+
+asf\common\services\clock\samg\
+ osc.h
+ pll.h
+ sysclk.c //Added includes to fix arduino compile error
+ sysclk.h
+ 
+asf\common\services\usb\class\cdc\
+ usb_protocol_cdc.h
+  
+asf\common\services\usb
+ usb_protocol.h
+ usb_atmel.h
