@@ -16,8 +16,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef _VARIANT_ARDUINO_DUE_X_
-#define _VARIANT_ARDUINO_DUE_X_
+#ifndef _VARIANT_FEYNMAN_
+#define _VARIANT_FEYNMAN_
 
 /*----------------------------------------------------------------------------
  *        Definitions
@@ -70,6 +70,29 @@ extern "C"{
 
 // Interrupts
 #define digitalPinToInterrupt(p)  ((p) < NUM_DIGITAL_PINS ? (p) : -1)
+
+/*
+ * Analog pins
+ */
+static const uint8_t A0  = 17;
+static const uint8_t A1  = 18;
+static const uint8_t A2  = 19;
+static const uint8_t A3  = 20;
+static const uint8_t A4  = 32;
+static const uint8_t A5  = 33;
+static const uint8_t A6  = 34;
+static const uint8_t A7  = 35;
+#define ADC_RESOLUTION		12
+
+/*
+ * TC
+ */
+#define TC_INTERFACE        TC0
+#define TC_INTERFACE_ID     ID_TC0
+#define TC_FREQUENCY        100000
+#define TC_MAX_DUTY_CYCLE   255
+#define TC_MIN_DUTY_CYCLE   0
+#define TC_RESOLUTION		8
 
 #ifdef __cplusplus
 }

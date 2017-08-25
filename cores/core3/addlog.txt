@@ -23,3 +23,6 @@ main.cpp
 main.h - mdelay added?
 syscalls.c
 syscalls.h
+
+wiring_analog.c
+wiring_analog.h

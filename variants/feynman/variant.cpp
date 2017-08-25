@@ -56,10 +56,10 @@ void init( void )
 	setPullup(APIN_UART1_RXD, true); 							// Enable pullup for RX1
 
 	// No need to initialize the USB pins on the SAM4E because they are USB by default
-
-	// Initialize Analog Controller
-	AnalogInInit();
-
+*/
+	// Initialize ADC
+	analogInputInit();
+/*
 	// Initialize analogOutput module
 	AnalogOutInit();
 

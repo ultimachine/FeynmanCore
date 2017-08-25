@@ -89,6 +89,7 @@ typedef enum _EAnalogChannel
   ADC5,
   ADC6,
   ADC7,
+  /*
   ADC8,
   ADC9,
   ADC10,
@@ -99,6 +100,7 @@ typedef enum _EAnalogChannel
   ADC15,
   DA0,
   DA1
+  */
 } EAnalogChannel ;
 
 #define ADC_CHANNEL_NUMBER_NONE 0xffffffff
@@ -174,6 +176,7 @@ typedef struct _PinDescription
   EPWMChannel ulPWMChannel ;
   ETCChannel ulTCChannel ;
 } PinDescription ;
+#define ulAnalogChannel ulADCChannelNumber
 
 extern uint8_t g_pinStatus[];
 extern const uint8_t g_pincount;
@@ -191,6 +194,7 @@ extern const PinDescription g_APinDescription[] ;
 //FIXMELATER
 #include "wiring.h"
 #include "wiring_digital.h"
+#include "wiring_analog.h"
 
 #ifdef __cplusplus
 #include "USB/USBSerial.h"
