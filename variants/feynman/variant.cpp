@@ -46,6 +46,10 @@ void init( void )
 
 	// Initialize C library (I think this calls C++ constructors for static data too)
 	__libc_init_array();
+	
+	// Enable parallel access on PIO output data registers
+	PIOA->PIO_OWER = 0xFFFFFFFF;
+	PIOB->PIO_OWER = 0xFFFFFFFF;
 
 	// We no longer disable pullups on all pins here, better to leave them enabled until the port is initialised
 /*
@@ -67,6 +71,10 @@ void init( void )
 	ConfigurePin(g_APinDescription[APIN_HSMCI_CLOCK]);
 	ConfigurePin(g_APinDescription[APINS_HSMCI_DATA]);
 	*/
+	
+	// Configure some UART pins
+	ConfigurePin(g_APinDescription[42]);
+	ConfigurePin(g_APinDescription[43]);
 
 	// Start the USB
 	udc_start();
