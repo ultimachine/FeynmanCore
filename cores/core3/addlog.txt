@@ -26,3 +26,12 @@ syscalls.h
 
 wiring_analog.c
 wiring_analog.h
+
+
+RingBuffer.cpp
+RingBuffer.h
+//USARTClass.cpp
+//USARTClass.h
+//UARTClass.cpp
+//UARTClass.h
+HardwareSerial.h
