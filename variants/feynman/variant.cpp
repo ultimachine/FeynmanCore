@@ -19,6 +19,33 @@
 #include <Arduino.h>
 #include "udc.h" // udc_start() For starting ASF USB Stack 
 #include "wdt.h" //watchdog ASF driver
+#include "flexcom.h"
+
+// ----------------------------------------------------------------------------
+/*
+ * USART objects
+ */
+RingBuffer rx_buffer2;
+RingBuffer tx_buffer2;
+
+USARTClass Serial1(FLEXCOM6, USART6, FLEXCOM6_IRQn, ID_FLEXCOM6, &rx_buffer2, &tx_buffer2);
+void serialEvent1() __attribute__((weak));
+void serialEvent1() { }
+
+// IT handlers
+void FLEXCOM6_Handler(void)
+{
+  Serial1.IrqHandler();
+}
+
+// ----------------------------------------------------------------------------
+
+void serialEventRun(void)
+{
+  if (Serial1.available()) serialEvent1();
+}
+
+// ----------------------------------------------------------------------------
 
 extern "C" void __libc_init_array(void);
 //extern void UrgentInit();

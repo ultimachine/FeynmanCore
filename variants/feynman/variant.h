@@ -36,9 +36,8 @@
 #include "Arduino.h"
 
 #ifdef __cplusplus
-//FIXMELATER
-//#include "UARTClass.h"
-//#include "USARTClass.h"
+#include "UARTClass.h"
+#include "USARTClass.h"
 #endif
 
 #ifdef __cplusplus
@@ -96,6 +95,16 @@ static const uint8_t A7  = 35;
 
 #ifdef __cplusplus
 }
+#endif
+
+
+/*----------------------------------------------------------------------------
+ *        Arduino objects - C++ only
+ *----------------------------------------------------------------------------*/
+#ifdef __cplusplus
+
+extern USARTClass Serial1;
+
 #endif
 
 #endif /* _VARIANT_ARDUINO_DUE_X_ */
