@@ -93,6 +93,22 @@ static const uint8_t A7  = 35;
 #define TC_MIN_DUTY_CYCLE   0
 #define TC_RESOLUTION		8
 
+/*
+ * Wire Interfaces
+ */
+#define WIRE_INTERFACES_COUNT 1
+
+#define PIN_WIRE_SDA         (PIO_PA3_IDX)
+#define PIN_WIRE_SCL         (PIO_PA4_IDX)
+#define FLEXCOM_INTERFACE    FLEXCOM3
+#define WIRE_INTERFACE       TWI3
+#define WIRE_INTERFACE_ID    ID_FLEXCOM3
+#define WIRE_ISR_HANDLER     FLEXCOM3_Handler
+#define WIRE_ISR_ID          FLEXCOM3_IRQn
+
+static const uint8_t SDA  = PIN_WIRE_SDA;
+static const uint8_t SCL  = PIN_WIRE_SCL;
+
 #ifdef __cplusplus
 }
 #endif
