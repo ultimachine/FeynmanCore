@@ -58,7 +58,7 @@ extern "C"{
 //FIXMELATER
 // Number of pins defined in PinDescription array
 //#define APINS_COUNT				(79u)
-//#define NUM_DIGITAL_PINS		(54u)
+#define NUM_DIGITAL_PINS		48
 //#define NUM_ANALOG_INPUTS		(12u)
 
 #define digitalPinToPort(P)        ( g_APinDescription[P].pPort )
@@ -92,6 +92,40 @@ static const uint8_t A7  = 35;
 #define TC_MAX_DUTY_CYCLE   255
 #define TC_MIN_DUTY_CYCLE   0
 #define TC_RESOLUTION		8
+
+/*
+ * SPI Interfaces
+ */
+#define SPI_INTERFACES_COUNT 1
+
+#define SPI_INTERFACE        SPI0
+#define SPI_INTERFACE_ID     ID_FLEXCOM0
+#define SPI_CHANNELS_NUM 2
+#define PIN_SPI_SS0          (25u)//
+#define PIN_SPI_SS1          (26u)//
+#define PIN_SPI_MOSI         (10u)//
+#define PIN_SPI_MISO         (9u)//
+#define PIN_SPI_SCK          (32u)//
+#define BOARD_SPI_SS0        PIN_SPI_SS0
+#define BOARD_SPI_SS1        PIN_SPI_SS1
+#define BOARD_SPI_DEFAULT_SS BOARD_SPI_SS0
+
+#define BOARD_PIN_TO_SPI_PIN(x) (x==BOARD_SPI_SS0 ? PIN_SPI_SS0 : -1)
+#define BOARD_PIN_TO_SPI_CHANNEL(x) (x==BOARD_SPI_SS0 ? 0 : -1)
+//#define BOARD_PIN_TO_SPI_PIN(x) \
+//	(x==BOARD_SPI_SS0 ? PIN_SPI_SS0 : \
+//	(x==BOARD_SPI_SS1 ? PIN_SPI_SS1 : \
+//	(x==BOARD_SPI_SS2 ? PIN_SPI_SS2 : PIN_SPI_SS3 )))
+//#define BOARD_PIN_TO_SPI_CHANNEL(x) \
+//	(x==BOARD_SPI_SS0 ? 0 : \
+//	(x==BOARD_SPI_SS1 ? 1 : \
+//	(x==BOARD_SPI_SS2 ? 2 : 3)))
+
+static const uint8_t SS   = BOARD_SPI_SS0;
+static const uint8_t SS1  = BOARD_SPI_SS1;
+static const uint8_t MOSI = PIN_SPI_MOSI;
+static const uint8_t MISO = PIN_SPI_MISO;
+static const uint8_t SCK  = PIN_SPI_SCK;
 
 /*
  * Wire Interfaces
