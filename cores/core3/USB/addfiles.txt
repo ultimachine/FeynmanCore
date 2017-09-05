@@ -17,11 +17,12 @@ asf\common\utils\interrupt\
  interrupt_sam_nvic.c
  interrupt_sam_nvic.h
 
+#adding these .h files was a mistake. Should be including from generic versions "asf\common\services\clock\"
 asf\common\services\clock\samg\
- osc.h
- pll.h
+ #osc.h
+ #pll.h
  sysclk.c //Added includes to fix arduino compile error
- sysclk.h
+ #sysclk.h
  
 asf\common\services\usb\class\cdc\
  usb_protocol_cdc.h
