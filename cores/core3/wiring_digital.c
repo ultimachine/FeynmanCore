@@ -95,7 +95,7 @@ extern void pinMode( uint32_t ulPin, uint32_t ulMode )
     }
 }
 
-extern void digitalWrite( uint32_t ulPin, uint32_t ulVal )
+extern void digitalWriteBroken( uint32_t ulPin, uint32_t ulVal )
 {
   /* Handle */
 	if ( g_APinDescription[ulPin].ulPinType == PIO_NOT_A_PIN )
@@ -117,6 +117,12 @@ extern void digitalWrite( uint32_t ulPin, uint32_t ulVal )
   {
     PIO_SetOutput( g_APinDescription[ulPin].pPort, g_APinDescription[ulPin].ulPin, ulVal, 0, PIO_PULLUP ) ;
   }
+}
+
+extern void digitalWrite( uint32_t ulPin, uint32_t ulVal )
+{
+ if(ulVal) g_APinDescription[ulPin].pPort -> PIO_SODR = g_APinDescription[ulPin].ulPin;
+ else      g_APinDescription[ulPin].pPort -> PIO_CODR = g_APinDescription[ulPin].ulPin;
 }
 
 extern int digitalRead( uint32_t ulPin )
