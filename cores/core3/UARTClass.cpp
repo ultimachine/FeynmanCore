@@ -29,7 +29,7 @@
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-UARTClass::UARTClass( Uart *pUart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer *pRx_buffer, RingBuffer *pTx_buffer )
+UARTClass::UARTClass( Usart *pUart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer *pRx_buffer, RingBuffer *pTx_buffer )
 {
   _rx_buffer = pRx_buffer;
   _tx_buffer = pTx_buffer;

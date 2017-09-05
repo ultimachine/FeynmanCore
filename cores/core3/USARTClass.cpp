@@ -24,7 +24,7 @@
 // Constructors ////////////////////////////////////////////////////////////////
 
 USARTClass::USARTClass( Flexcom* pFlexcom, Usart* pUsart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer* pRx_buffer, RingBuffer* pTx_buffer )
-  : UARTClass((Uart*)pUsart, dwIrq, dwId, pRx_buffer, pTx_buffer)
+  : UARTClass((Usart*)pUsart, dwIrq, dwId, pRx_buffer, pTx_buffer)
 {
   _pFlexcom=pFlexcom;
   // In case anyone needs USART specific functionality in the future
