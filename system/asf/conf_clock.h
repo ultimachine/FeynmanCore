@@ -72,7 +72,7 @@
 // ===== PLL0 (A) Options   (Fpll = (Fclk * PLL_mul) / PLL_div)
 // Use mul and div effective values here.
 #define CONFIG_PLL0_SOURCE          PLL_SRC_SLCK_XTAL
-#define CONFIG_PLL0_MUL             2930
+#define CONFIG_PLL0_MUL             3663 //2930 //mainck: 2930 * 32768 = 96010240 Hz
 #define CONFIG_PLL0_DIV             1
 
 // ===== PLL1 (B) Options   (Fpll = (Fclk * PLL_mul) / PLL_div)

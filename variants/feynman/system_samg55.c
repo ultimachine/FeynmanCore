@@ -93,7 +93,7 @@ void SystemInit(void)
 	while (!(PMC->PMC_SR & PMC_SR_MCKRDY)) {
 	}
 
-	SystemCoreClock = CHIP_FREQ_CPU_MAX;
+	SystemCoreClock = F_CPU; //CHIP_FREQ_CPU_MAX;
 }
 
 void SystemCoreClockUpdate(void)
