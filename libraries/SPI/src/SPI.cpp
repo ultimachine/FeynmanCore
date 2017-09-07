@@ -61,6 +61,16 @@ void SPIClass::init() {
 	interruptMask[1] = 0;
 	interruptMask[2] = 0;
 	interruptMask[3] = 0;
+
+	//FLEXCOM0->FLEXCOM_MR = FLEXCOM_MR_OPMODE_SPI;
+	//pmc_enable_periph_clk(SPI_INTERFACE_ID);
+	
+	//flexcom_enable(FLEXCOM0);
+	//flexcom_set_opmode(FLEXCOM0, FLEXCOM_SPI);
+	
+	pmc_enable_periph_clk(SPI_INTERFACE_ID);
+	FLEXCOM0->FLEXCOM_MR = FLEXCOM_MR_OPMODE_SPI;
+
 	initCb();
 	SPI_Configure(spi, id, SPI_MR_MSTR | SPI_MR_PS | SPI_MR_MODFDIS);
 	SPI_Enable(spi);

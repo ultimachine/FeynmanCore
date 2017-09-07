@@ -16,7 +16,7 @@
 #include <stdio.h>
 
 #include <chip.h>
-#include <spi.h>
+#include <libsam/spi.h> //LIBSAM SPI DRIVER
 
 // SPI_HAS_TRANSACTION means SPI has
 //   - beginTransaction()
