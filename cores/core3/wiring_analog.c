@@ -69,19 +69,70 @@ void analogReference(eAnalogReference ulMode)
 	analog_reference = ulMode;
 }
 
+/** The conversion data is done flag */
+//volatile bool is_conversion_done = false;
+
+/** The conversion data value */
+//volatile uint32_t g_ul_value = 0;
+
+/**
+ * \brief ADC interrupt callback function.
+ */
+ /*
+static void adc_end_conversion(void)
+{
+  g_ul_value = adc_channel_get_value(ADC, ADC_CHANNEL_1);
+  is_conversion_done = true;
+}
+*/
+
 void analogInputInit()
 {
 	// Initialize Analog Controller
 	pmc_enable_periph_clk(ID_ADC);
+
 	//adc_init(ADC, SystemCoreClock, ADC_FREQ_MAX, ADC_STARTUP_FAST);
 	//adc_configure_timing(ADC, 0, ADC_SETTLING_TIME_3, 1);
 	//adc_configure_trigger(ADC, ADC_TRIG_SW, 0); // Disable hardware trigger.
 	//adc_disable_interrupt(ADC, 0xFFFFFFFF); // Disable all ADC interrupts.
 	//adc_disable_all_channel(ADC);
 
-	ADC->ADC_MR |= ADC_MR_FREERUN_ON; // |
+//	ADC->ADC_MR |= ADC_MR_FREERUN_ON; // |
 					 //ADC_MR_LOWRES_BITS_12;
+	
+//	ADC->ADC_EMR |= ADC_12_BITS;
+	//adc_set_resolution(ADC, ADC_12_BITS);
+
+/*
+	adc_enable();
+	#if SAMG55
+	adc_select_clock_source_mck(ADC);
+	#endif
+
+	struct adc_config adc_cfg;
+
+	adc_get_config_defaults(&adc_cfg);
+
+	adc_init(ADC, &adc_cfg);
+	adc_channel_enable(ADC, ADC_CHANNEL_0);
+
+	adc_set_trigger(ADC, ADC_TRIG_TIO_CH_0);
+
+	adc_set_callback(ADC, ADC_INTERRUPT_EOC_0, adc_end_conversion, 1);
+
 	adc_set_resolution(ADC, ADC_12_BITS);
+	adc_start_calibration(ADC);
+	*/
+
+	#if SAMG55
+	adc_select_clock_source_mck(ADC);
+	#endif
+
+	struct adc_config adc_cfg;
+
+	adc_get_config_defaults(&adc_cfg);
+
+	adc_init(ADC, &adc_cfg);
 }
 
 #ifdef __SAMG55J19__
@@ -257,7 +308,7 @@ uint32_t analogRead(uint32_t ulPin)
 				g_pinStatus[ulPin] = (g_pinStatus[ulPin] & 0xF0) | PIN_STATUS_ANALOG;
 			}
 
-			// Start the ADC
+			// Trigger an ADC conversion
 			adc_start( ADC );
 
 			// Wait for end of conversion

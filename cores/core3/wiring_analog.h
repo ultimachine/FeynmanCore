@@ -76,6 +76,12 @@ extern void analogInputInit( void ) ;
 
 //static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to);
 
+/** The conversion data is done flag */
+extern volatile bool is_conversion_done;
+
+/** The conversion data value */
+extern  volatile uint32_t g_ul_value;
+
 #ifdef __cplusplus
 }
 #endif
