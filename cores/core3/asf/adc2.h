@@ -47,6 +47,10 @@
 #ifndef ADC2_H_INCLUDED
 #define ADC2_H_INCLUDED
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "compiler.h"
 #include "status_codes.h"
 
@@ -810,4 +814,9 @@ static inline void adc_ref_vol_sel(Adc *const adc,
  *   - \code uint32_t result = adc_channel_get_value(ADC, ADC_CHANNEL_1);
 \endcode
  */
+ 
+#ifdef __cplusplus
+}
+#endif
+ 
 #endif /* ADC2_H_INCLUDED */
