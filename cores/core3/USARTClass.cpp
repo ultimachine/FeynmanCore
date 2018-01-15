@@ -40,8 +40,8 @@ void USARTClass::begin(const uint32_t dwBaudRate)
 
 void USARTClass::begin(const uint32_t dwBaudRate, const UARTModes config)
 {
-  flexcom_enable(FLEXCOM6);
-  flexcom_set_opmode(FLEXCOM6, FLEXCOM_USART);
+  flexcom_enable(_pFlexcom);
+  flexcom_set_opmode(_pFlexcom, FLEXCOM_USART);
 
   uint32_t modeReg = static_cast<uint32_t>(config);
   modeReg |= US_MR_USART_MODE_NORMAL | US_MR_USCLKS_MCK | US_MR_CHMODE_NORMAL;
