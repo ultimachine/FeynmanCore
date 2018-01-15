@@ -98,14 +98,14 @@ static const uint8_t A7  = 35;
  */
 #define SPI_INTERFACES_COUNT 1
 
-#define SPI_INTERFACE        SPI0
-#define SPI_INTERFACE_ID     ID_FLEXCOM0
+#define SPI_INTERFACE        SPI5
+#define SPI_INTERFACE_ID     ID_FLEXCOM5 //ID_FLEXCOM0
 #define SPI_CHANNELS_NUM 2
-#define PIN_SPI_SS0          (25u)// PA25
+#define PIN_SPI_SS0          11 //PA11 //(25u)// PA25
 #define PIN_SPI_SS1          (26u)// PA26
-#define PIN_SPI_MOSI         (10u)// PA10
-#define PIN_SPI_MISO         (9u) // PA9
-#define PIN_SPI_SCK          (32u)// PB0
+#define PIN_SPI_MOSI         13 //PA13 //(10u)// PA10
+#define PIN_SPI_MISO         12 //PA12 //(9u) // PA9
+#define PIN_SPI_SCK          14 //PA14 //(32u)// PB0
 #define BOARD_SPI_SS0        PIN_SPI_SS0
 #define BOARD_SPI_SS1        PIN_SPI_SS1
 #define BOARD_SPI_DEFAULT_SS BOARD_SPI_SS0
