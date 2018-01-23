@@ -374,8 +374,8 @@ void TwoWire::onService(void) {
 
 #if WIRE_INTERFACES_COUNT > 0
 static void Wire_Init(void) {
-	FLEXCOM_INTERFACE->FLEXCOM_MR = FLEXCOM_MR_OPMODE_TWI;
 	pmc_enable_periph_clk(WIRE_INTERFACE_ID);
+	FLEXCOM_INTERFACE->FLEXCOM_MR = FLEXCOM_MR_OPMODE_TWI;
 	PIO_Configure(
 			g_APinDescription[PIN_WIRE_SDA].pPort,
 			g_APinDescription[PIN_WIRE_SDA].ulPinType,
