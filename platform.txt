@@ -104,8 +104,8 @@ recipe.size.regex=\.text\s+([0-9]+).*
 # -------------------
 
 # BOSSA
-tools.bossac.path={runtime.tools.bossac.path}
-tools.bossac.cmd=bossac
+tools.bossac.path={runtime.tools.bossac_samg55.path}
+tools.bossac.cmd=bossac_samg55
 tools.bossac.cmd.windows=bossac_samg55.exe
 
 tools.bossac.upload.params.verbose=-i -d
