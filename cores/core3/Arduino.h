@@ -191,10 +191,11 @@ extern const PinDescription g_APinDescription[] ;
 // Include board variant
 #include "variant.h"
 
-//FIXMELATER
 #include "wiring.h"
 #include "wiring_digital.h"
 #include "wiring_analog.h"
+#include "wiring_shift.h"
+#include "WInterrupts.h"
 
 #ifdef __cplusplus
 #include "USB/USBSerial.h"
