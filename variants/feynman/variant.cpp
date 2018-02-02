@@ -66,8 +66,6 @@ void init( void )
 		// Capture error
 		while (true);
 	}
-	
-	wdt_disable(WDT);
 
 	//UrgentInit();			// initialise anything in the main application that can't wait
 

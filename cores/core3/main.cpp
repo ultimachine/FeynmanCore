@@ -35,7 +35,7 @@ void init(); //in variant.cpp
 int main( void )
 {
 	// Initialize watchdog
-	//watchdogSetup();
+	watchdogSetup();
 /*
 	SystemInit();
 	// Set Systick to 1ms interval, common to all SAM3 variants

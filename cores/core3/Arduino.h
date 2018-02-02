@@ -205,6 +205,8 @@ extern const PinDescription g_APinDescription[] ;
 #include "wiring_shift.h"
 #include "WInterrupts.h"
 
+#include "watchdog.h"
+
 #ifdef __cplusplus
 #include "USB/USBSerial.h"
 #endif
