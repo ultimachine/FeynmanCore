@@ -47,4 +47,6 @@ public:
 
 extern SerialCDC SerialUSB;
 
+extern "C" uint32_t g_cdcBaudRate;
+
 #endif /* USBSERIAL_H_ */

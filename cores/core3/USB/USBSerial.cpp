@@ -9,6 +9,8 @@
 #include "conf_usb.h"		// include this to check that the signatures of the callback functions are correct
 #include "udi_cdc.h"		// Atmel CDC module
 
+#include "udc.h" //For udc_detach()
+
 // SerialCDC members
 
 SerialCDC::SerialCDC() : /* _cdc_tx_buffer(), */ txBufsize(1), isConnected(false) {}
@@ -128,6 +130,33 @@ extern "C" void core_cdc_rx_notify(uint8_t port)
 extern "C" void core_cdc_tx_empty_notify(uint8_t port)
 {
 	SerialUSB.cdcTxEmptyNotify();
+}
+
+static void soft_reset() {
+  #define RSTC_CR_KEY(value) ((RSTC_CR_KEY_Msk & ((value) << RSTC_CR_KEY_Pos)))
+  const int RSTC_KEY = 0xA5;
+  RSTC->RSTC_CR =
+  RSTC_CR_KEY(RSTC_KEY) |
+  RSTC_CR_PROCRST |
+  RSTC_CR_PERRST;
+}
+
+static void enable_bootloader_magic() {
+	#define BOOT_DOUBLE_TAP_ADDRESS           (IRAM_ADDR + IRAM_SIZE - 4)
+	#define BOOT_DOUBLE_TAP_DATA              (*((volatile uint32_t *) BOOT_DOUBLE_TAP_ADDRESS))
+	#define DOUBLE_TAP_MAGIC 0x07738135
+	BOOT_DOUBLE_TAP_DATA = DOUBLE_TAP_MAGIC;
+}
+
+uint32_t g_cdcBaudRate;
+
+extern "C" void core_cdc_set_coding_ext(uint8_t port, usb_cdc_line_coding_t *cfg) {
+	g_cdcBaudRate = cfg->dwDTERate;
+	if(g_cdcBaudRate == 1200) {
+		enable_bootloader_magic();
+		udc_detach();
+		soft_reset();
+	}
 }
 
 // End

@@ -119,7 +119,7 @@ inline void core_cdc_set_dtr(uint8_t port, bool b_enable) {}
 inline void core_cdc_set_rts(uint8_t port, bool b_enable) {}
 
 // This is called when the hot asks to change the port speed, data bits etc.
-inline void core_cdc_set_coding_ext(uint8_t port, usb_cdc_line_coding_t *cfg) {}
+void core_cdc_set_coding_ext(uint8_t port, usb_cdc_line_coding_t *cfg);
 
 #ifdef __cplusplus
 }
