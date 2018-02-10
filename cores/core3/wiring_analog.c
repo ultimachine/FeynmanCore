@@ -347,10 +347,159 @@ static uint8_t TCChanEnabled[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 void analogOutputInit(void) {
 }
 
+// This code is from the CoreNG project.
+// Convert a float in 0..1 to unsigned integer in 0..N
+static inline uint32_t ConvertRange(float f, uint32_t top)
+//pre(0.0 <= ulValue; ulValue <= 1.0)
+//post(result <= top)
+{
+  return lround(f * (float)top);
+}
+
+#define NUM_TC_CHANNELS 6 //SAMG55J19
+
+// This code is from the CoreNG project.
+// AnalogWrite to a TC pin
+// Return true if successful, false if we need to fall back to digitalWrite
+// WARNING: this will screw up big time if you try to use both the A and B outputs of the same timer at different frequencies.
+static bool AnalogWriteTc(uint32_t ulPin, float fValue, uint16_t freq)
+//pre(0.0 <= fValue; fValue <= 1.0)
+//pre((pinDesc.ulPinAttribute & PIN_ATTR_TIMER) != 0)
+{
+	static uint16_t TCChanFreq[NUM_TC_CHANNELS] = {0};
+
+	// Map from timer channel to TC channel number
+	const uint8_t channelToChNo[] = { 0, 1, 2, 0, 1, 2, 0, 1, 2 };
+
+	// Map from timer channel to TIO number
+	static const uint8_t channelToId[] = {
+		ID_TC0, ID_TC1, ID_TC2,
+		ID_TC3, ID_TC4, ID_TC5,
+		#ifdef ID_TC6
+		ID_TC6, ID_TC7, ID_TC8
+		#endif
+		};
+
+  PinDescription pinDesc = g_APinDescription[ulPin];
+
+  Tc * const channelToTC[] = {
+		TC0, TC0, TC0,
+		TC1, TC1, TC1,
+		#ifdef TC2
+		TC2, TC2, TC2
+		#endif
+		};
+
+// Current frequency of each TC channel
+  const uint32_t chan = (uint32_t)pinDesc.ulTCChannel >> 1;
+  if (freq == 0)
+  {
+    TCChanFreq[chan] = freq;
+    return false;
+  }
+  else
+  {
+    Tc * const chTC = channelToTC[chan];
+    const uint32_t chNo = channelToChNo[chan];
+    const bool doInit = (TCChanFreq[chan] != freq);
+
+    if (doInit)
+    {
+      TCChanFreq[chan] = freq;
+
+      // Enable the peripheral clock to this timer
+      pmc_enable_periph_clk(channelToId[chan]);
+
+      // Set up the timer mode and top count
+      tc_init(chTC, chNo,
+              TC_CMR_TCCLKS_TIMER_CLOCK2 |      // clock is MCLK/8 to save a little power and avoid overflow later on
+              TC_CMR_WAVE |                   // Waveform mode
+              TC_CMR_WAVSEL_UP_RC |           // Counter running up and reset when equals to RC
+              TC_CMR_EEVT_XC0 |               // Set external events from XC0 (this setup TIOB as output)
+              TC_CMR_ACPA_CLEAR | TC_CMR_ACPC_CLEAR |
+              TC_CMR_BCPB_CLEAR | TC_CMR_BCPC_CLEAR |
+              TC_CMR_ASWTRG_SET | TC_CMR_BSWTRG_SET); // Software trigger will let us set the output high
+      const uint32_t top = (VARIANT_MCK/8)/(uint32_t)freq;  // with 120MHz clock this varies between 228 (@ 65.535kHz) and 15 million (@ 1Hz)
+      // The datasheet doesn't say how the period relates to the RC value, but from measurement it seems that we do not need to subtract one from top
+      tc_write_rc(chTC, chNo, top);
+
+      // When using TC channels to do PWM control of heaters with active low outputs on the Duet WiFi, if we don't take precautions
+      // then we get a glitch straight after initialising the channel, because the compare output starts in the low state.
+      // To avoid that, set the output high here if a high PWM was requested.
+	  /*
+      if (fValue >= 0.5)
+      {
+        TC_WriteCCR(chTC, chan, TC_CCR_SWTRG);
+      }
+	  */
+    }
+
+    const uint32_t threshold = ConvertRange(fValue, tc_read_rc(chTC, chNo));
+    if (threshold == 0)
+    {
+      if (((uint32_t)pinDesc.ulTCChannel & 1) == 0)
+      {
+        tc_write_ra(chTC, chNo, 1);
+        TC_SetCMR_ChannelA(chTC, chNo, TC_CMR_ACPA_CLEAR | TC_CMR_ACPC_CLEAR);
+      }
+      else
+      {
+        tc_write_rb(chTC, chNo, 1);
+        TC_SetCMR_ChannelB(chTC, chNo, TC_CMR_BCPB_CLEAR | TC_CMR_BCPC_CLEAR);
+      }
+
+    }
+    else
+    {
+      if (((uint32_t)pinDesc.ulTCChannel & 1) == 0)
+      {
+        tc_write_ra(chTC, chNo, threshold);
+        TC_SetCMR_ChannelA(chTC, chNo, TC_CMR_ACPA_CLEAR | TC_CMR_ACPC_SET);
+      }
+      else
+      {
+        tc_write_rb(chTC, chNo, threshold);
+        TC_SetCMR_ChannelB(chTC, chNo, TC_CMR_BCPB_CLEAR | TC_CMR_BCPC_SET);
+      }
+    }
+
+    if (doInit)
+    {
+      pio_configure(pinDesc.pPort, pinDesc.ulPinType, pinDesc.ulPin, pinDesc.ulPinConfiguration);
+      tc_start(chTC, chNo);
+    }
+  }
+  return true;
+}
+
+void analogWrite(uint32_t ulPin, uint32_t ulValue) {
+    if(ulPin >= NUM_DIGITAL_PINS) return;
+
+	const uint32_t attr = g_APinDescription[ulPin].ulPinAttribute;
+
+	if ((attr & PIN_ATTR_TIMER) == PIN_ATTR_TIMER) {
+
+		float fValue = ulValue / 255;
+		if ( AnalogWriteTc(ulPin, fValue, 1000) )
+		{
+		  return;
+		}
+	}
+
+	// Defaults to digital write
+	pinMode(ulPin, OUTPUT);
+	ulValue = mapResolution(ulValue, _writeResolution, 8);
+	if (ulValue < 128)
+		digitalWrite(ulPin, LOW);
+	else
+		digitalWrite(ulPin, HIGH);
+}
+
 // Right now, PWM output only works on the pins with
 // hardware support.  These are defined in the appropriate
 // pins_*.c file.  For the rest of the pins, we default
 // to digital output.
+#if 0
 void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 	uint32_t attr = g_APinDescription[ulPin].ulPinAttribute;
 #if 0 //no DAC on samg55???
@@ -502,6 +651,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 	else
 		digitalWrite(ulPin, HIGH);
 }
+#endif
 
 #ifdef __cplusplus
 }
