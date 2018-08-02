@@ -333,7 +333,7 @@ __always_inline static void io_pin_init(uint32_t pin, uint32_t flags,
 		reg &= ~(mask);                                    \
 		reg |= bits & mask;                                \
 		UDP->UDP_CSR[ep] = reg;                            \
-		while ((UDP->UDP_CSR[ep] & bits) != bits);         \
+		} while (0); //while ((UDP->UDP_CSR[ep] & bits) != bits);         \
 	} while (0);
 //! @}
 
@@ -370,7 +370,8 @@ __always_inline static void io_pin_init(uint32_t pin, uint32_t flags,
 #define  udd_reset_endpoint(ep)                                   \
 	do {                                                      \
 		Set_bits(UDP->UDP_RST_EP, UDP_RST_EP_EP0 << (ep));\
-		while (!(UDP->UDP_RST_EP & (UDP_RST_EP_EP0 << (ep))));\
+		int count = 10000; \
+		while (!(UDP->UDP_RST_EP & (UDP_RST_EP_EP0 << (ep))) && count--);\
 		Clr_bits(UDP->UDP_RST_EP, UDP_RST_EP_EP0 << (ep));\
 	} while(0)
   //! tests if the selected endpoint is being reset

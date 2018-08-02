@@ -16,8 +16,8 @@
  */
 
 //! Device definition (mandatory)
-#define  USB_DEVICE_VENDOR_ID             0x27B1 //27B1_UltiMachine
-#define  USB_DEVICE_PRODUCT_ID            0x0202 //0001_Rambo
+#define  USB_DEVICE_VENDOR_ID             USB_VID_ATMEL
+#define  USB_DEVICE_PRODUCT_ID            USB_PID_ATMEL_ASF_TWO_CDC
 #define  USB_DEVICE_MAJOR_VERSION         1
 #define  USB_DEVICE_MINOR_VERSION         0
 #define  USB_DEVICE_POWER                 100 // Consumption on Vbus line (mA)
@@ -61,7 +61,7 @@
  */
 
 //! Define two USB communication ports
-#define  UDI_CDC_PORT_NB 1
+#define  UDI_CDC_PORT_NB 2
 
 //! Interface callback definition
 #define  UDI_CDC_ENABLE_EXT(port)         core_cdc_enable(port)
