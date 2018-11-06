@@ -481,7 +481,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 	if ((attr & PIN_ATTR_TIMER) == PIN_ATTR_TIMER) {
 
 		float fValue = (float)ulValue / 255;
-		if ( AnalogWriteTc(ulPin, fValue, 1000) )
+		if ( AnalogWriteTc(ulPin, fValue, 31000) )
 		{
 		  return;
 		}
