@@ -463,9 +463,10 @@ static bool AnalogWriteTc(uint32_t ulPin, float fValue, uint16_t freq)
       }
     }
 
+    pio_configure(pinDesc.pPort, pinDesc.ulPinType, pinDesc.ulPin, pinDesc.ulPinConfiguration);
     if (doInit)
     {
-      pio_configure(pinDesc.pPort, pinDesc.ulPinType, pinDesc.ulPin, pinDesc.ulPinConfiguration);
+      //pio_configure(pinDesc.pPort, pinDesc.ulPinType, pinDesc.ulPin, pinDesc.ulPinConfiguration);
       tc_start(chTC, chNo);
     }
   }
@@ -479,7 +480,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 
 	if ((attr & PIN_ATTR_TIMER) == PIN_ATTR_TIMER) {
 
-		float fValue = ulValue / 255;
+		float fValue = (float)ulValue / 255;
 		if ( AnalogWriteTc(ulPin, fValue, 1000) )
 		{
 		  return;
