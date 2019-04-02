@@ -101,6 +101,10 @@ void init( void )
 	ConfigurePin(g_APinDescription[42]);
 	ConfigurePin(g_APinDescription[43]);
 
+	// Timer (PWM) Pins
+	//ConfigurePin(g_APinDescription[16]);
+	//ConfigurePin(g_APinDescription[23]);
+
 	// Start the USB
 	udc_start();
 }

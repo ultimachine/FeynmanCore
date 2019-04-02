@@ -194,6 +194,9 @@ extern const PinDescription g_APinDescription[] ;
 
 #ifdef __cplusplus
 } // extern "C"
+
+#include "WMath.h"
+
 #endif // __cplusplus
 
 // Include board variant
